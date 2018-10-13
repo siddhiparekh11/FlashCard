@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+//Codepath lab
 public class MainActivity extends AppCompatActivity {
 
     TextView txtQuestion,txtAnswer,txtChoice1,txtChoice2,txtChoice3;
@@ -18,13 +18,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txtQuestion = (TextView) findViewById(R.id.flashcard_question);
-        txtAnswer = (TextView) findViewById(R.id.flashcard_answer);
-        txtChoice1 = (TextView) findViewById(R.id.choice1);
-        txtChoice2 = (TextView) findViewById(R.id.choice2);
-        txtChoice3 = (TextView) findViewById(R.id.choice3);
-        relChoices = (RelativeLayout)findViewById(R.id.relchoices);
-        toggleChoices = (ImageView) findViewById(R.id.toggle_choices_visibility);
+        txtQuestion = findViewById(R.id.flashcard_question);
+        txtAnswer = findViewById(R.id.flashcard_answer);
+        txtChoice1 =  findViewById(R.id.choice1);
+        txtChoice2 = findViewById(R.id.choice2);
+        txtChoice3 =  findViewById(R.id.choice3);
+        relChoices = findViewById(R.id.relchoices);
+        toggleChoices = findViewById(R.id.toggle_choices_visibility);
 
         relChoices.setVisibility(View.INVISIBLE);
 
