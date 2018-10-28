@@ -1,5 +1,7 @@
 package com.example.siddhiparekh11.codepathlab;
 
+import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView txtQuestion,txtAnswer,txtChoice1,txtChoice2,txtChoice3;
     RelativeLayout relChoices;
-    ImageView toggleChoices;
+    ImageView toggleChoices,addFlashCard,editFlashCard;
     boolean isShowingAnswers;
 
     @Override
@@ -20,13 +22,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         txtQuestion = findViewById(R.id.flashcard_question);
         txtAnswer = findViewById(R.id.flashcard_answer);
-        txtChoice1 =  findViewById(R.id.choice1);
+      /*  txtChoice1 =  findViewById(R.id.choice1);
         txtChoice2 = findViewById(R.id.choice2);
         txtChoice3 =  findViewById(R.id.choice3);
         relChoices = findViewById(R.id.relchoices);
-        toggleChoices = findViewById(R.id.toggle_choices_visibility);
+        toggleChoices = findViewById(R.id.toggle_choices_visibility);*/
+        addFlashCard = findViewById(R.id.addFlashCard);
+        editFlashCard = findViewById(R.id.editFlashCard);
 
-        relChoices.setVisibility(View.INVISIBLE);
+     //   relChoices.setVisibility(View.INVISIBLE);
 
 
        /* txtQuestion.setBackgroundColor(getResources().getColor(R.color.blue,null));
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        txtChoice1.setOnClickListener(new View.OnClickListener() {
+       /* txtChoice1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.setBackgroundColor(getResources().getColor(R.color.red,null));
@@ -84,6 +88,38 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
+        });*/
+
+        addFlashCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,AddFlashCardActivity.class);
+                startActivityForResult(intent,100);
+            }
+        });
+
+        editFlashCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this,AddFlashCardActivity.class);
+                intent.putExtra("Question",txtQuestion.getText());
+                intent.putExtra("Answer",txtAnswer.getText());
+                startActivityForResult(intent,100);
+
+            }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==100 && resultCode==RESULT_OK){
+            txtQuestion.setText(data.getExtras().getString("Question"));
+            txtAnswer.setText(data.getExtras().getString("Answer"));
+            Snackbar.make(txtAnswer.getRootView(),"Card successfully created",Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+
 }
