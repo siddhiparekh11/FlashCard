@@ -99,4 +99,13 @@
         android:layout_alignTop="@+id/btnNext"
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/iconedit" />
+
+    <TextView
+        android:id="@+id/txtTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnEdit"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="165dp"
+        android:text="TextView" />
 </RelativeLayout>

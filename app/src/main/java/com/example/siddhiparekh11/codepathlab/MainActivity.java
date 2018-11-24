@@ -2,6 +2,7 @@ package com.example.siddhiparekh11.codepathlab;
 
 import android.animation.Animator;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,20 +14,30 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.plattysoft.leonids.ParticleSystem;
+
 import java.util.List;
 import java.util.Random;
 
 //Codepath lab
 public class MainActivity extends AppCompatActivity {
 
-    TextView txtQuestion,txtAnswer,txtChoice1,txtChoice2,txtChoice3;
+    TextView txtQuestion,txtAnswer,txtChoice1,txtChoice2,txtChoice3,txtCounter;
     RelativeLayout relChoices;
     ImageView toggleChoices,addFlashCard,editFlashCard,btnNext,btnDelete,btnEdit;
     boolean isShowingAnswers;
     FlashcardDatabase flashcardDatabase;
     List<Flashcard> allFlashcards;
     int currentCardDisplayedIndex = -1;
+    CountDownTimer  countDownTimer;
+    View answerSideView,questionSideView;
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         allFlashcards = flashcardDatabase.getAllCards();
         txtQuestion = findViewById(R.id.flashcard_question);
         txtAnswer = findViewById(R.id.flashcard_answer);
+        txtCounter = findViewById(R.id.txtTimer);
       /*  txtChoice1 =  findViewById(R.id.choice1);
         txtChoice2 = findViewById(R.id.choice2);
         txtChoice3 =  findViewById(R.id.choice3);
@@ -46,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnDelete = findViewById(R.id.btnDelete);
         btnEdit = findViewById(R.id.btnEdit);
+        answerSideView = findViewById(R.id.flashcard_answer);
+        questionSideView = findViewById(R.id.flashcard_question);
 
      //   relChoices.setVisibility(View.INVISIBLE);
 
@@ -86,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
             txtQuestion.startAnimation(leftOutAnim);
+            startTimer();
                // currentCardDisplayedIndex++;
                 if (currentCardDisplayedIndex > allFlashcards.size() - 1) {
                     currentCardDisplayedIndex = 0;
@@ -105,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
 
         leftOutAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -129,7 +146,29 @@ public class MainActivity extends AppCompatActivity {
                 txtQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View answerSideView = findViewById(R.id.flashcard_answer);
+
+               /* txtQuestion.setCameraDistance(25000);
+                txtAnswer.setCameraDistance(25000);
+                questionSideView.animate()
+                        .rotationY(90)
+                        .setDuration(200)
+                        .withEndAction(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        questionSideView.setVisibility(View.INVISIBLE);
+                                        txtAnswer.setVisibility(View.VISIBLE);
+                                        // second quarter turn
+                                        txtAnswer.setRotationY(-90);
+                                        txtAnswer.animate()
+                                                .rotationY(0)
+                                                .setDuration(200)
+                                                .start();
+                                    }
+                                }
+                        ).start();*/
+
+
 
                 // get the center for the clipping circle
                 int cx = answerSideView.getWidth() / 2;
@@ -139,17 +178,23 @@ public class MainActivity extends AppCompatActivity {
                 float finalRadius = (float) Math.hypot(cx, cy);
 
                 // create the animator for this view (the start radius is zero)
-                Animator anim = ViewAnimationUtils.createCircularReveal(answerSideView, cx, cy, 0f, finalRadius);
+               Animator anim = ViewAnimationUtils.createCircularReveal(answerSideView, cx, cy, 0f, finalRadius);
                 txtQuestion.setVisibility(View.INVISIBLE);
                 txtAnswer.setVisibility(View.VISIBLE);
                 anim.setDuration(3000);
                 anim.start();
+
             }
         });
+
 
         txtAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new ParticleSystem(MainActivity.this, 100, R.drawable.confetti, 3000)
+                        .setSpeedRange(0.2f, 0.5f)
+                        .oneShot(txtAnswer, 100);
+
                 txtAnswer.setVisibility(View.INVISIBLE);
                 txtQuestion.setVisibility(View.VISIBLE);
             }
@@ -222,6 +267,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,101);
             }
         });
+
+        countDownTimer = new CountDownTimer(16000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                txtCounter.setText("" + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+            }
+        };
+
+
+    }
+
+    private void startTimer(){
+        countDownTimer.cancel();
+        countDownTimer.start();
     }
 
     public int getRandomNumber(int minNumber, int maxNumber) {
