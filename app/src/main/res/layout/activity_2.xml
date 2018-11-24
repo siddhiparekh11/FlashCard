@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgCancelView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="28dp"
+        app:srcCompat="@drawable/iconcancel" />
+
+    <EditText
+        android:id="@+id/edtQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="false"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="52dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:hint="Enter question here"
+         />
+
+    <EditText
+        android:id="@+id/edtAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/edtQuestion"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="129dp"
+        android:ems="10"
+        android:hint="Enter answer here"
+        android:inputType="textMultiLine" />
+
+    <ImageView
+        android:id="@+id/imgImportView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/imgCancelView"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="19dp"
+        app:srcCompat="@drawable/iconimport" />
+</RelativeLayout>

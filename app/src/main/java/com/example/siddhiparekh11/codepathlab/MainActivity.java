@@ -1,10 +1,14 @@
 package com.example.siddhiparekh11.codepathlab;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -74,9 +78,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Animation leftOutAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.left_out);
+        final Animation rightInAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_in);
+
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+            txtQuestion.startAnimation(leftOutAnim);
                // currentCardDisplayedIndex++;
                 if (currentCardDisplayedIndex > allFlashcards.size() - 1) {
                     currentCardDisplayedIndex = 0;
@@ -97,12 +106,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        leftOutAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                // this method is called when the animation first starts
+            }
 
-        txtQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // this method is called when the animation is finished playing
+                txtQuestion.startAnimation(rightInAnim);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // we don't need to worry about this method
+            }
+        });
+
+
+
+                txtQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                View answerSideView = findViewById(R.id.flashcard_answer);
+
+                // get the center for the clipping circle
+                int cx = answerSideView.getWidth() / 2;
+                int cy = answerSideView.getHeight() / 2;
+
+                // get the final radius for the clipping circle
+                float finalRadius = (float) Math.hypot(cx, cy);
+
+                // create the animator for this view (the start radius is zero)
+                Animator anim = ViewAnimationUtils.createCircularReveal(answerSideView, cx, cy, 0f, finalRadius);
                 txtQuestion.setVisibility(View.INVISIBLE);
                 txtAnswer.setVisibility(View.VISIBLE);
+                anim.setDuration(3000);
+                anim.start();
             }
         });
 
@@ -156,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,AddFlashCardActivity.class);
                 startActivityForResult(intent,100);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
 
